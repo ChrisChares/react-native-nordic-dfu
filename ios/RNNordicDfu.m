@@ -221,7 +221,16 @@ RCT_EXPORT_METHOD(startDFU:(NSString *)deviceAddress
                                             initWithCentralManager:centralManager
                                             target:peripheral]
                                            withFirmware:firmware];
-
+          
+        DFUUuidHelper *uuidHelper = [[DFUUuidHelper alloc] initWithCustomUuids:@[
+                                                                                [[DFUUuid alloc] initWithUUID:[CBUUID UUIDWithString:@"cafe8000-c0ff-ee01-8000-a110ca7ab1e0"] forType:DFUUuidTypeSecureService],
+                                                                                [[DFUUuid alloc] initWithUUID:[CBUUID UUIDWithString:@"cafe8001-c0ff-ee01-8000-a110ca7ab1e0"] forType:DFUUuidTypeSecureControl],
+                                                                                [[DFUUuid alloc] initWithUUID:[CBUUID UUIDWithString:@"cafe8002-c0ff-ee01-8000-a110ca7ab1e0"] forType:DFUUuidTypeSecurePacket],
+                                                                                [[DFUUuid alloc] initWithUUID:[CBUUID UUIDWithString:@"cafe8003-c0ff-ee01-8000-a110ca7ab1e0"] forType:DFUUuidTypeButtonlessService],
+                                                                                [[DFUUuid alloc] initWithUUID:[CBUUID UUIDWithString:@"cafe8003-c0ff-ee01-8000-a110ca7ab1e0"] forType:DFUUuidTypeButtonlessCharacteristic],
+                                                                               ]];
+          
+        initiator.uuidHelper = uuidHelper;
         initiator.logger = self;
         initiator.delegate = self;
         initiator.progressDelegate = self;
