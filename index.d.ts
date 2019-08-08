@@ -12,11 +12,13 @@ declare module 'react-native-nordic-dfu' {
     static startDFU({
       deviceAddress,
       deviceName,
-      filePath
+      filePath,
+      uuidHelper: UUIDHelper
     }: {
       deviceAddress: string;
       deviceName?: string;
       filePath: string | null;
+      uuidHelper: UUIDHelper;
     }): Promise<string>;
   }
 

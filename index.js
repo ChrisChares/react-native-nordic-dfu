@@ -22,6 +22,7 @@ function rejectPromise(message) {
  * @param {string} obj.deviceAddress The MAC address for the device that should be updated
  * @param {string} [obj.deviceName = null] The name of the device in the update notification
  * @param {string} obj.filePath The file system path to the zip-file used for updating
+ * @param {UUIDHelper} obj.uuidHelper a list of custom dfu service/chars to use
  * @returns {Promise} A promise that resolves or rejects with the `deviceAddress` in the return value
  *
  * @example
@@ -30,20 +31,28 @@ function rejectPromise(message) {
  * NordicDFU.startDFU({
  *   deviceAddress: "C3:53:C0:39:2F:99",
  *   deviceName: "Pilloxa Pillbox",
- *   filePath: "/data/user/0/com.nordicdfuexample/files/RNFetchBlobTmp4of.zip"
+ *   filePath: "/data/user/0/com.nordicdfuexample/files/RNFetchBlobTmp4of.zip",
+ *   uuidHelper: {
+ *    "secureDFUService": "uuid"
+ *    etc...
+ *   }
  * })
  *   .then(res => console.log("Transfer done:", res))
  *   .catch(console.log);
  */
-function startDFU({ deviceAddress, deviceName = null, filePath }) {
+function startDFU({ deviceAddress, deviceName = null, filePath, uuidHelper }) {
   if (deviceAddress == undefined) {
     return rejectPromise("No deviceAddress defined");
   }
   if (filePath == undefined) {
     return rejectPromise("No filePath defined");
   }
+
+  if ( uuidHelper == undefined ) {
+    return rejectPromise("You have to pass a uuid helper");
+  }
   const upperDeviceAddress = deviceAddress.toUpperCase();
-  return RNNordicDfu.startDFU(upperDeviceAddress, deviceName, filePath);
+  return RNNordicDfu.startDFU(upperDeviceAddress, deviceName, filePath, uuidHelper);
 }
 
 /**
