@@ -1,4 +1,13 @@
 declare module 'react-native-nordic-dfu' {
+
+  export interface UUIDHelper {
+    secureDFUService: string,
+    secureDFUControlPoint: string,
+    secureDFUPacket: string,
+    buttonlessService: string,
+    buttonlessCharacteristic: string
+  }
+
   export class NordicDFU {
     static startDFU({
       deviceAddress,
