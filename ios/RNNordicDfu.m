@@ -223,15 +223,15 @@ RCT_EXPORT_METHOD(startDFU:(NSString *)deviceAddress
                                             target:peripheral]
                                            withFirmware:firmware];
         
-        DFUUuidHelper *uuidHelper = [[DFUUuidHelper alloc] initWithCustomUuids:@[
-                                                                                [[DFUUuid alloc] initWithUUID:[CBUUID UUIDWithString:uuidHelper[@"secureDFUService"] forType:DFUUuidTypeSecureService],
-                                                                                [[DFUUuid alloc] initWithUUID:[CBUUID UUIDWithString:uuidHelper[@"secureDFUControlPoint"] forType:DFUUuidTypeSecureControl],
-                                                                                [[DFUUuid alloc] initWithUUID:[CBUUID UUIDWithString:uuidHelper[@"secureDFUPacket"] forType:DFUUuidTypeSecurePacket],
-                                                                                [[DFUUuid alloc] initWithUUID:[CBUUID UUIDWithString:uuidHelper[@"buttonlessService"] forType:DFUUuidTypeButtonlessService],
-                                                                                [[DFUUuid alloc] initWithUUID:[CBUUID UUIDWithString:uuidHelper[@"buttonlessCharacteristic"] forType:DFUUuidTypeButtonlessCharacteristic],
+        DFUUuidHelper *_uuidHelper = [[DFUUuidHelper alloc] initWithCustomUuids:@[
+                                                                                [[DFUUuid alloc] initWithUUID:[CBUUID UUIDWithString:uuidHelper[@"secureDFUService"]] forType:DFUUuidTypeSecureService],
+                                                                                [[DFUUuid alloc] initWithUUID:[CBUUID UUIDWithString:uuidHelper[@"secureDFUControlPoint"]] forType:DFUUuidTypeSecureControl],
+                                                                                [[DFUUuid alloc] initWithUUID:[CBUUID UUIDWithString:uuidHelper[@"secureDFUPacket"]] forType:DFUUuidTypeSecurePacket],
+                                                                                [[DFUUuid alloc] initWithUUID:[CBUUID UUIDWithString:uuidHelper[@"buttonlessService"]] forType:DFUUuidTypeButtonlessService],
+                                                                                [[DFUUuid alloc] initWithUUID:[CBUUID UUIDWithString:uuidHelper[@"buttonlessCharacteristic"]] forType:DFUUuidTypeButtonlessCharacteristic],
                                                                                ]];
           
-        initiator.uuidHelper = uuidHelper;
+        initiator.uuidHelper = _uuidHelper;
         initiator.logger = self;
         initiator.delegate = self;
         initiator.progressDelegate = self;
