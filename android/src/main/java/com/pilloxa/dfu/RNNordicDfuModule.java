@@ -9,6 +9,9 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import com.facebook.react.bridge.*;
 import com.facebook.react.modules.core.RCTNativeAppEventEmitter;
+
+import java.util.UUID;
+
 import no.nordicsemi.android.dfu.*;
 
 public class RNNordicDfuModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
@@ -30,13 +33,25 @@ public class RNNordicDfuModule extends ReactContextBaseJavaModule implements Lif
     }
 
     @ReactMethod
-    public void startDFU(String address, String name, String filePath, Promise promise) {
+    public void startDFU(String address, String name, String filePath, ReadableMap uuidHelper, Promise promise) {
         mPromise = promise;
         final DfuServiceInitiator starter = new DfuServiceInitiator(address)
                 .setKeepBond(false);
         if (name != null) {
             starter.setDeviceName(name);
         }
+
+        UUID dfuServiceUuid = UUID.fromString(uuidHelper.getString("secureDFUService"));
+        UUID dfuControlPointUuid = UUID.fromString(uuidHelper.getString("secureDFUControlPoint"));
+        UUID dfuPacketUuid = UUID.fromString(uuidHelper.getString("secureDFUPacket"));
+        starter.setCustomUuidsForSecureDfu(dfuServiceUuid, dfuControlPointUuid, dfuPacketUuid);
+
+        UUID buttonlessDfuServiceUuid = UUID.fromString(uuidHelper.getString("buttonlessService"));
+        UUID buttonlessDfuControlPointUuid = UUID.fromString(uuidHelper.getString("buttonlessCharacteristic"));
+        starter.setCustomUuidsForExperimentalButtonlessDfu(buttonlessDfuServiceUuid, buttonlessDfuControlPointUuid);
+        starter.setCustomUuidsForButtonlessDfuWithoutBondSharing(buttonlessDfuServiceUuid, buttonlessDfuControlPointUuid);
+        starter.setCustomUuidsForButtonlessDfuWithBondSharing(buttonlessDfuServiceUuid, buttonlessDfuControlPointUuid);
+
         starter.setUnsafeExperimentalButtonlessServiceInSecureDfuEnabled(true);
         starter.setZip(filePath);
         final DfuServiceController controller = starter.start(this.reactContext, DfuService.class);
